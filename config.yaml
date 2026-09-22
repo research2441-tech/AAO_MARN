@@ -1,0 +1,62 @@
+dataset_root: ./PlantVillage
+output_dir: .
+image_size: 224
+split:
+  train: 0.70
+  val: 0.15
+  test: 0.15
+  seed: 2026
+training:
+  seeds: [17, 23, 41, 59, 83]
+  epochs: 25
+  batch_size: 32
+  patience: 5
+  min_delta: 0.0005
+  learning_rate: 0.0003
+  weight_decay: 0.0001
+  num_workers: 2
+  threshold_metric: balanced_accuracy
+preprocessing:
+  clahe_clip_limit: 2.0
+  clahe_tile_grid: 8
+  slic_segments: 120
+  slic_compactness: 10.0
+  slic_sigma: 1.0
+  kmeans_clusters: 3
+  kmeans_attempts: 5
+model:
+  pretrained: true
+  attention_dim: 256
+  attention_heads: 4
+  rnn_hidden: 192
+  dropout: 0.30
+goa:
+  population: 20
+  generations: 25
+  min_channels: 32
+  max_channels: 256
+  c_max: 1.0
+  c_min: 0.00004
+  alpha: 0.95
+  beta: 0.05
+  probe_epochs: 3
+  seed: 31415
+aao:
+  population: 12
+  iterations: 15
+  patience: 5
+  min_delta: 0.0005
+  adaptation_probability: 0.30
+  seed: 27182
+  bounds:
+    learning_rate: [0.00005, 0.001]
+    weight_decay: [0.000001, 0.001]
+    dropout: [0.10, 0.50]
+    attention_dim: [128, 512]
+    rnn_hidden: [96, 320]
+    attention_heads: [2, 8]
+evaluation:
+  bootstrap_resamples: 2000
+  calibration_bins: 15
+  confidence_level: 0.95
+baseline_models: [mobilenetv2, efficientnet_b0, convnext_tiny, vit_b_16, swin_t]
